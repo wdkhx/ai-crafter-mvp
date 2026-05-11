@@ -1,56 +1,107 @@
 <view class="page">
-  <view class="hero">
-    <view class="hero-title">AI CRAFTER</view>
-    <view class="hero-subtitle">科研论文写作工具</view>
-    <view class="hero-note">仅用于辅助写作与结构化初稿生成，禁止学术不端。</view>
+  <view wx:if="{{viewState === 'toolbox'}}">
+    <view class="toolbox-hero">
+      <view>
+        <view class="eyebrow">AI CRAFTER</view>
+        <view class="toolbox-title">选择一个任务，剩下交给 Agent</view>
+        <view class="toolbox-subtitle">把复杂流程收进工具里，先从科研论文写作开始。</view>
+      </view>
+    </view>
+
+    <view class="quick-start panel" bindtap="openPaperTool">
+      <view class="card-topline">
+        <view class="tool-icon">文</view>
+        <view class="badge">可用</view>
+      </view>
+      <view class="tool-title">科研论文写作</view>
+      <view class="tool-desc">输入一个主题，自动完成选题解析、文献线索、大纲、正文和参考文献格式化。</view>
+      <view class="tool-footer">
+        <text>推荐：先生成 3000 字初稿</text>
+        <text class="arrow">开始</text>
+      </view>
+    </view>
+
+    <view class="section-label">即将开放</view>
+    <view class="coming-grid">
+      <view wx:for="{{comingTools}}" wx:key="name" class="coming-card">
+        <view class="coming-icon">{{item.icon}}</view>
+        <view>
+          <view class="coming-name">{{item.name}}</view>
+          <view class="coming-desc">{{item.desc}}</view>
+        </view>
+      </view>
+    </view>
   </view>
 
-  <view wx:if="{{viewState === 'form'}}" class="panel">
-    <view class="field">
-      <text class="label">论文主题</text>
-      <textarea class="textarea" placeholder="例如：基于深度学习的图像分类方法研究" value="{{form.topic}}" data-key="topic" bindinput="onInput" />
-    </view>
-
-    <view class="grid">
-      <view class="field">
-        <text class="label">论文字数</text>
-        <input class="input" type="number" value="{{form.word_count}}" data-key="word_count" bindinput="onInput" />
-      </view>
-      <view class="field">
-        <text class="label">参考文献</text>
-        <input class="input" type="number" value="{{form.reference_count}}" data-key="reference_count" bindinput="onInput" />
+  <view wx:if="{{viewState === 'form'}}">
+    <view class="nav-row" bindtap="backToToolbox">返回工具箱</view>
+    <view class="panel paper-intro">
+      <view class="tool-icon large">文</view>
+      <view>
+        <view class="paper-title">科研论文写作</view>
+        <view class="paper-subtitle">先填主题即可生成。字数、学科和引用格式已为你预设。</view>
       </view>
     </view>
 
-    <view class="field">
-      <text class="label">学科领域</text>
-      <picker mode="selector" range="{{fieldOptions}}" value="{{fieldIndex}}" bindchange="onFieldChange">
-        <view class="picker">{{form.field}}</view>
-      </picker>
-    </view>
+    <view class="panel">
+      <view class="field">
+        <text class="label">你想写什么主题？</text>
+        <textarea class="textarea main-input" placeholder="例如：基于深度学习的图像分类方法研究" value="{{form.topic}}" data-key="topic" bindinput="onInput" />
+      </view>
 
-    <view class="field">
-      <text class="label">引用格式</text>
-      <picker mode="selector" range="{{citationOptions}}" value="{{citationIndex}}" bindchange="onCitationChange">
-        <view class="picker">{{form.citation_style}}</view>
-      </picker>
-    </view>
+      <view class="default-row">
+        <view>
+          <view class="default-title">默认生成方案</view>
+          <view class="default-desc">{{form.word_count}} 字 · {{form.reference_count}} 篇文献 · {{form.field}} · {{form.citation_style}}</view>
+        </view>
+        <button class="mini-btn" bindtap="toggleAdvanced">{{showAdvanced ? '收起' : '调整'}}</button>
+      </view>
 
-    <view class="field">
-      <text class="label">特殊要求</text>
-      <textarea class="textarea short" placeholder="例如：需要包含实验部分，重点介绍 Transformer 模型" value="{{form.special_requirements}}" data-key="special_requirements" bindinput="onInput" />
-    </view>
+      <view wx:if="{{showAdvanced}}" class="advanced">
+        <view class="grid">
+          <view class="field">
+            <text class="label">字数</text>
+            <input class="input" type="number" value="{{form.word_count}}" data-key="word_count" bindinput="onInput" />
+          </view>
+          <view class="field">
+            <text class="label">文献数</text>
+            <input class="input" type="number" value="{{form.reference_count}}" data-key="reference_count" bindinput="onInput" />
+          </view>
+        </view>
 
-    <button class="primary-btn" loading="{{submitting}}" bindtap="submitPaper">提交生成</button>
+        <view class="field">
+          <text class="label">学科领域</text>
+          <picker mode="selector" range="{{fieldOptions}}" value="{{fieldIndex}}" bindchange="onFieldChange">
+            <view class="picker">{{form.field}}</view>
+          </picker>
+        </view>
+
+        <view class="field">
+          <text class="label">引用格式</text>
+          <picker mode="selector" range="{{citationOptions}}" value="{{citationIndex}}" bindchange="onCitationChange">
+            <view class="picker">{{form.citation_style}}</view>
+          </picker>
+        </view>
+
+        <view class="field">
+          <text class="label">特殊要求</text>
+          <textarea class="textarea short" placeholder="例如：包含实验部分，重点介绍 Transformer 模型" value="{{form.special_requirements}}" data-key="special_requirements" bindinput="onInput" />
+        </view>
+      </view>
+
+      <button class="primary-btn" loading="{{submitting}}" bindtap="submitPaper">生成论文初稿</button>
+      <view class="safe-note">生成内容仅用于辅助写作与结构参考，请自行核验事实和引用。</view>
+    </view>
   </view>
 
   <view wx:if="{{viewState === 'running'}}" class="panel">
     <view class="status-title">{{task.current_step}}</view>
-    <progress percent="{{task.progress}}" stroke-width="8" activeColor="#2563eb" backgroundColor="#e4e7ec" />
+    <progress percent="{{task.progress}}" stroke-width="8" activeColor="#0f766e" backgroundColor="#e5e7eb" />
     <view class="progress-row">
       <text>{{task.progress}}%</text>
       <text>预计剩余 {{task.estimated_remaining_seconds}} 秒</text>
     </view>
+    <view class="quiet-line">Agent 正在按固定工作流处理，你可以稍后从历史记录回来查看。</view>
     <view class="steps">
       <view wx:for="{{task.workflow_trace}}" wx:key="key" class="step">
         <view class="dot {{item.status}}"></view>
@@ -65,15 +116,18 @@
 
   <view wx:if="{{viewState === 'result'}}">
     <view class="panel result-head">
+      <view class="result-kicker">已生成初稿</view>
       <view class="result-title">{{task.result.title}}</view>
       <view class="metrics">
         <text>{{task.result.metrics.wordCount}} 字</text>
-        <text>{{task.result.metrics.referenceCount}} 篇参考文献</text>
+        <text>{{task.result.metrics.referenceCount}} 篇文献</text>
         <text>重复率约 {{task.result.metrics.estimatedDuplicationRate}}%</text>
       </view>
-      <button class="primary-btn" bindtap="copyFullText">一键复制全文</button>
-      <button class="ghost-btn" bindtap="downloadDocx">导出 .docx</button>
-      <button class="ghost-btn" bindtap="resetForm">不满意，重新生成</button>
+      <view class="action-grid">
+        <button class="primary-btn" bindtap="copyFullText">复制全文</button>
+        <button class="ghost-btn" bindtap="downloadDocx">导出 .docx</button>
+      </view>
+      <button class="plain-btn" bindtap="resetForm">重新生成</button>
     </view>
     <view class="panel">
       <view class="section-title">摘要</view>

@@ -138,14 +138,23 @@ function buildStepSummary(stepKey, state) {
 }
 
 async function analyzeTopic(input) {
-  const prompt = `请解析科研论文选题，输出 JSON：研究对象、核心问题、方法关键词、写作重点。题目：${input.topic}，领域：${input.field}，特殊要求：${input.specialRequirements || '无'}`;
+  const prompt = [
+    '你是严谨的中文科研写作规划助手。请解析论文选题，并只输出 JSON。',
+    'JSON 字段：focus, keywords, researchQuestion, method, writingScope, riskNotes。',
+    '要求：keywords 为 4-6 个中文关键词；不要编造具体实验数据；riskNotes 写明需要用户后续核验的事实或引用。',
+    `题目：${input.topic}`,
+    `领域：${input.field}`,
+    `特殊要求：${input.specialRequirements || '无'}`
+  ].join('\n');
   const raw = await callLlm(prompt, () => ({
     focus: `${input.field}领域中“${input.topic}”的研究背景、关键方法与应用验证`,
     keywords: extractKeywords(input.topic, input.field),
     researchQuestion: `如何系统梳理${input.topic}的技术路线、优势限制与未来方向`,
-    method: input.topic.includes('深度学习') ? '深度学习与实验对比' : '文献综述与方法分析'
+    method: input.topic.includes('深度学习') ? '深度学习与实验对比' : '文献综述与方法分析',
+    writingScope: '面向课程论文或开题前初稿的结构化写作辅助',
+    riskNotes: '参考文献和事实性表述需要用户结合真实数据库复核'
   }));
-  return typeof raw === 'string' ? { focus: raw, keywords: extractKeywords(input.topic, input.field) } : raw;
+  return normalizeAnalysis(raw, input);
 }
 
 async function searchLiterature(input, analysis) {
@@ -181,11 +190,29 @@ async function writeContent(state) {
   const sections = [];
 
   for (const heading of outline) {
-    const prompt = `写一段科研论文初稿。题目：${input.topic}；章节：${heading}；领域：${input.field}；约 ${targetPerSection} 字；要求学术、严谨、避免编造数据。`;
+    const evidence = literature
+      .slice(0, Math.min(5, literature.length))
+      .map((item, index) => `[${index + 1}] ${item.title}：${item.insight}`)
+      .join('\n');
+    const prompt = [
+      '你是中文科研论文初稿写作助手。请只输出本章节正文，不要输出标题，不要使用 Markdown。',
+      `论文题目：${input.topic}`,
+      `章节：${heading}`,
+      `学科领域：${input.field}`,
+      `写作目标：约 ${targetPerSection} 个中文字符，分 2-4 个自然段。`,
+      `研究问题：${analysis.researchQuestion}`,
+      `可用文献线索：\n${evidence}`,
+      '写作要求：',
+      '1. 论证要从问题、方法、价值、局限自然展开。',
+      '2. 可以使用 [1] 这类引用标记，但只能引用上方文献线索。',
+      '3. 不要编造具体准确率、样本量、实验平台等事实性数据。',
+      '4. 不要写“作为AI”“本文将”等空泛套话。',
+      input.specialRequirements ? `5. 需要回应特殊要求：${input.specialRequirements}` : ''
+    ].filter(Boolean).join('\n');
     const content = await callLlm(prompt, () =>
       buildSectionContent({ heading, input, analysis, literature, targetPerSection })
     );
-    sections.push({ heading, content });
+    sections.push({ heading, content: cleanSectionContent(content, heading) });
   }
 
   return sections;
@@ -207,7 +234,7 @@ async function formatReferences(input, literature) {
 async function finalizePaper(state) {
   const { input, analysis, draftSections, references } = state;
   const title = input.topic;
-  const abstract = `摘要：围绕${analysis.focus}，本文从研究背景、相关工作、关键技术、方法设计和应用价值等方面展开论述。通过梳理代表性文献与典型技术路线，本文总结了当前研究的主要进展、存在问题和后续优化方向，为相关研究与工程实践提供参考。`;
+  const abstract = await generateAbstract(state);
   const fullText = [
     `# ${title}`,
     '',
@@ -230,6 +257,22 @@ async function finalizePaper(state) {
       estimatedDuplicationRate: Number((Math.random() * 7 + 4).toFixed(1))
     }
   };
+}
+
+async function generateAbstract(state) {
+  const { input, analysis, draftSections } = state;
+  const sectionSummary = draftSections
+    .map((section) => `${section.heading}：${section.content.slice(0, 120)}`)
+    .join('\n');
+  const prompt = [
+    '请为以下论文初稿生成一个中文摘要，只输出摘要正文，不要输出“摘要：”。',
+    `题目：${input.topic}`,
+    `研究焦点：${analysis.focus}`,
+    `章节内容摘要：\n${sectionSummary}`,
+    '要求：180-260 字；包含研究背景、方法路径、主要观点和应用价值；不要编造实验数据。'
+  ].join('\n');
+  const content = await callLlm(prompt, () => `围绕${analysis.focus}，本文从研究背景、相关工作、关键技术、方法设计和应用价值等方面展开论述。通过梳理代表性文献与典型技术路线，本文总结了当前研究的主要进展、存在问题和后续优化方向，为相关研究与工程实践提供参考。`);
+  return `摘要：${String(content).replace(/^摘要[:：]\s*/, '').trim()}`;
 }
 
 async function callLlm(prompt, fallbackFactory) {
@@ -298,6 +341,52 @@ function extractKeywords(topic, field) {
     ? ['深度学习', '模型优化', '特征提取', '泛化能力']
     : ['研究方法', '系统设计', '评价指标', '应用场景'];
   return Array.from(new Set([...cleaned, ...defaults])).slice(0, 6);
+}
+
+function normalizeAnalysis(raw, input) {
+  const fallback = {
+    focus: `${input.field}领域中“${input.topic}”的研究背景、关键方法与应用验证`,
+    keywords: extractKeywords(input.topic, input.field),
+    researchQuestion: `如何系统梳理${input.topic}的技术路线、优势限制与未来方向`,
+    method: input.topic.includes('深度学习') ? '深度学习与实验对比' : '文献综述与方法分析',
+    writingScope: '面向课程论文或开题前初稿的结构化写作辅助',
+    riskNotes: '参考文献和事实性表述需要用户结合真实数据库复核'
+  };
+
+  if (typeof raw !== 'string') {
+    return {
+      ...fallback,
+      ...raw,
+      keywords: Array.isArray(raw.keywords) && raw.keywords.length ? raw.keywords : fallback.keywords
+    };
+  }
+
+  const jsonText = raw.match(/\{[\s\S]*\}/)?.[0];
+  if (jsonText) {
+    try {
+      const parsed = JSON.parse(jsonText);
+      return {
+        ...fallback,
+        ...parsed,
+        keywords: Array.isArray(parsed.keywords) && parsed.keywords.length ? parsed.keywords : fallback.keywords
+      };
+    } catch {
+      // Keep the fallback below when a model returns malformed JSON.
+    }
+  }
+
+  return {
+    ...fallback,
+    focus: raw.slice(0, 240)
+  };
+}
+
+function cleanSectionContent(content, heading) {
+  return String(content)
+    .replace(new RegExp(`^#+\\s*${heading}\\s*`, 'i'), '')
+    .replace(new RegExp(`^${heading}\\s*[:：]?\\s*`, 'i'), '')
+    .replace(/^正文[:：]\s*/i, '')
+    .trim();
 }
 
 function buildSectionContent({ heading, input, analysis, literature, targetPerSection }) {

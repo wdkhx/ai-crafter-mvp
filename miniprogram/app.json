@@ -11,14 +11,14 @@
     "backgroundColor": "#f4f7fb"
   },
   "tabBar": {
-    "color": "#667085",
-    "selectedColor": "#2563eb",
+    "color": "#6b7280",
+    "selectedColor": "#0f766e",
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "写作"
+        "text": "工具箱"
       },
       {
         "pagePath": "pages/history/history",

@@ -10,17 +10,23 @@ Page({
     citationOptions,
     fieldIndex: 0,
     citationIndex: 0,
-    viewState: 'form',
+    viewState: 'toolbox',
+    showAdvanced: false,
     submitting: false,
     pollTimer: null,
     task: null,
+    comingTools: [
+      { icon: '综', name: '文献综述', desc: '按主题整理研究脉络与代表文献' },
+      { icon: 'P', name: 'PPT 大纲', desc: '把研究内容转成汇报结构' },
+      { icon: '摘', name: '论文摘要润色', desc: '优化摘要表达和关键词' }
+    ],
     form: {
-      topic: '基于深度学习的图像分类方法研究',
+      topic: '',
       word_count: 3000,
       reference_count: 8,
       field: fieldOptions[0],
       citation_style: citationOptions[0],
-      special_requirements: '需要包含实验部分，重点介绍 Transformer 模型'
+      special_requirements: ''
     }
   },
 
@@ -31,6 +37,19 @@ Page({
   onInput(event) {
     const key = event.currentTarget.dataset.key;
     this.setData({ [`form.${key}`]: event.detail.value });
+  },
+
+  openPaperTool() {
+    this.setData({ viewState: 'form' });
+  },
+
+  backToToolbox() {
+    this.clearPoll();
+    this.setData({ viewState: 'toolbox', task: null });
+  },
+
+  toggleAdvanced() {
+    this.setData({ showAdvanced: !this.data.showAdvanced });
   },
 
   onFieldChange(event) {
