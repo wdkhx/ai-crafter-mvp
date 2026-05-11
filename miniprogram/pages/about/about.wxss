@@ -1,0 +1,18 @@
+.title {
+  font-size: 42rpx;
+  font-weight: 700;
+  margin-bottom: 20rpx;
+}
+
+.section {
+  font-size: 32rpx;
+  font-weight: 700;
+  margin-bottom: 16rpx;
+}
+
+.paragraph {
+  color: #475467;
+  font-size: 28rpx;
+  line-height: 1.8;
+  margin-bottom: 16rpx;
+}

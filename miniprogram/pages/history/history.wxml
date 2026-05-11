@@ -1,0 +1,20 @@
+<view class="page">
+  <view class="header-row">
+    <view>
+      <view class="title">我的历史</view>
+      <view class="muted">按生成时间倒序展示</view>
+    </view>
+    <button class="danger-btn clear-btn" bindtap="clearHistory">清空</button>
+  </view>
+
+  <view wx:if="{{history.length === 0}}" class="empty panel">暂无生成记录</view>
+
+  <view wx:for="{{history}}" wx:key="task_id" class="panel history-card" data-id="{{item.task_id}}" bindtap="openDetail">
+    <view class="topic">{{item.topic}}</view>
+    <view class="meta">
+      <text>{{item.status}}</text>
+      <text>{{item.word_count}} 字</text>
+    </view>
+    <view class="muted">{{item.created_at}}</view>
+  </view>
+</view>

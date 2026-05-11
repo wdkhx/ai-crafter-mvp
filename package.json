@@ -1,0 +1,23 @@
+{
+  "name": "ai-crafter-mvp",
+  "private": true,
+  "version": "1.0.0",
+  "description": "AI CRAFTER MVP monorepo for mini program, backend, and developer platform.",
+  "scripts": {
+    "install:all": "npm install --workspaces",
+    "dev": "concurrently -n backend,platform -c cyan,magenta \"npm run dev -w backend\" \"npm run dev -w developer-platform\"",
+    "dev:backend": "npm run dev -w backend",
+    "dev:platform": "npm run dev -w developer-platform",
+    "seed": "npm run seed -w backend"
+  },
+  "workspaces": [
+    "backend",
+    "developer-platform"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}

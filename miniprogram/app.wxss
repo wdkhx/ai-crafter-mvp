@@ -1,0 +1,43 @@
+page {
+  background: #f4f7fb;
+  color: #101828;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 28rpx;
+  box-sizing: border-box;
+}
+
+.panel {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 28rpx;
+  box-shadow: 0 8rpx 24rpx rgba(16, 24, 40, 0.06);
+  margin-bottom: 24rpx;
+}
+
+.primary-btn {
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 12rpx;
+  font-weight: 600;
+}
+
+.ghost-btn {
+  background: #eef4ff;
+  color: #2563eb;
+  border-radius: 12rpx;
+  font-weight: 600;
+}
+
+.danger-btn {
+  background: #fff1f3;
+  color: #d92d20;
+  border-radius: 12rpx;
+}
+
+.muted {
+  color: #667085;
+}

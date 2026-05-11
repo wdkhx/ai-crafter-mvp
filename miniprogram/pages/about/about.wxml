@@ -1,0 +1,17 @@
+<view class="page">
+  <view class="panel">
+    <view class="title">AI CRAFTER</view>
+    <view class="paragraph">面向大学生科研写作的 AI 助手，MVP 版本只提供科研论文写作工具。</view>
+    <view class="paragraph">生成内容仅作为选题分析、结构搭建和初稿辅助，不应直接作为最终学术成果提交。</view>
+  </view>
+
+  <view class="panel">
+    <view class="section">使用帮助</view>
+    <view class="paragraph">填写主题、字数、参考文献数量、学科领域和引用格式后提交。生成过程中可以查看进度，也可以取消任务。</view>
+  </view>
+
+  <view class="panel">
+    <view class="section">问题反馈</view>
+    <button class="ghost-btn" open-type="contact">联系微信客服</button>
+  </view>
+</view>

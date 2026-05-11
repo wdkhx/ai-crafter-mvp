@@ -1,0 +1,113 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f7fb;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.side {
+  background: #101828 !important;
+  padding: 24px 16px;
+}
+
+.brand {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu-item {
+  border: 0;
+  background: transparent;
+  color: #d0d5dd;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-item.active,
+.menu-item:hover {
+  background: #1d2939;
+  color: #ffffff;
+}
+
+.topbar {
+  height: 88px;
+  background: #ffffff;
+  border-bottom: 1px solid #eaecf0;
+  padding: 16px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar h3 {
+  margin: 0 0 4px;
+}
+
+.content {
+  padding: 24px 28px 40px;
+}
+
+.notice,
+.metric-row {
+  margin-bottom: 18px;
+}
+
+.loading {
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+}
+
+.workflow-desc {
+  margin-bottom: 28px;
+}
+
+.workflow-line {
+  margin-top: 26px;
+}
+
+.endpoint {
+  background: #f2f4f7;
+  border: 1px solid #eaecf0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-top: 10px;
+  font-family: Consolas, monospace;
+}
+
+@media (max-width: 900px) {
+  .side {
+    display: none;
+  }
+
+  .topbar {
+    height: auto;
+    gap: 16px;
+    align-items: flex-start;
+  }
+}

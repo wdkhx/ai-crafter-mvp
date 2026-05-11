@@ -1,0 +1,138 @@
+.hero {
+  background: #101828;
+  color: #ffffff;
+  border-radius: 16rpx;
+  padding: 36rpx 28rpx;
+  margin-bottom: 24rpx;
+}
+
+.hero-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.hero-subtitle {
+  margin-top: 8rpx;
+  font-size: 28rpx;
+}
+
+.hero-note {
+  margin-top: 18rpx;
+  color: #d0d5dd;
+  font-size: 24rpx;
+  line-height: 1.6;
+}
+
+.field {
+  margin-bottom: 24rpx;
+}
+
+.label {
+  display: block;
+  color: #344054;
+  font-size: 26rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.input,
+.picker,
+.textarea {
+  width: 100%;
+  min-height: 88rpx;
+  background: #f9fafb;
+  border: 1rpx solid #d0d5dd;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+}
+
+.textarea {
+  height: 150rpx;
+}
+
+.textarea.short {
+  height: 120rpx;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+}
+
+.status-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  margin-bottom: 24rpx;
+}
+
+.progress-row,
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  justify-content: space-between;
+  color: #667085;
+  font-size: 24rpx;
+  margin: 18rpx 0 24rpx;
+}
+
+.steps {
+  margin: 28rpx 0;
+}
+
+.step {
+  display: flex;
+  gap: 18rpx;
+  margin-bottom: 22rpx;
+}
+
+.dot {
+  width: 18rpx;
+  height: 18rpx;
+  margin-top: 10rpx;
+  border-radius: 50%;
+  background: #d0d5dd;
+}
+
+.dot.succeeded {
+  background: #12b76a;
+}
+
+.dot.running {
+  background: #2563eb;
+}
+
+.step-name {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.step-summary {
+  color: #667085;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.result-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.section-title {
+  margin: 28rpx 0 12rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.paper-text,
+.reference {
+  color: #344054;
+  font-size: 28rpx;
+  line-height: 1.8;
+  word-break: break-word;
+}
