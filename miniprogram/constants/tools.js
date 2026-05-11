@@ -1,30 +1,34 @@
-export const FIELD_OPTIONS = ['计算机科学', '电子工程', '机械工程', '其他'];
+export const DEPTH_OPTIONS = ['standard', 'quick', 'deep'];
 
-export const CITATION_OPTIONS = ['GB/T 7714-2015', 'APA', 'MLA'];
+export const DEPTH_LABELS = {
+  quick: '快速浏览',
+  standard: '标准综述',
+  deep: '深入分析'
+};
 
-export const DEFAULT_PAPER_FORM = {
+export const DEPTH_DISPLAY_OPTIONS = DEPTH_OPTIONS.map((item) => DEPTH_LABELS[item]);
+
+export const DEFAULT_REVIEW_FORM = {
   topic: '',
-  word_count: 3000,
-  reference_count: 8,
-  field: FIELD_OPTIONS[0],
-  citation_style: CITATION_OPTIONS[0],
-  special_requirements: ''
+  depth: 'standard',
+  audience: '技术负责人 / 研发工程师',
+  focus: '技术趋势、代表项目、落地路径'
 };
 
 export const AVAILABLE_TOOLS = [
   {
-    id: 'paper-writing',
-    marker: '文',
-    name: '科研论文写作',
+    id: 'frontier-review',
+    marker: '综',
+    name: '技术点前沿综述',
     status: '可用',
-    description: '输入一个主题，生成论文初稿、章节结构和参考文献格式。',
-    meta: '推荐：3000 字初稿',
+    description: '输入一个技术点，自动抓取近期公开信号并生成结构化综述文档。',
+    meta: '示例：Agent',
     actionText: '开始'
   }
 ];
 
 export const UPCOMING_TOOLS = [
-  { id: 'literature-review', marker: '综', name: '文献综述', description: '整理研究脉络与代表文献' },
+  { id: 'tech-brief', marker: '报', name: '技术简报', description: '把一个方向整理成一页式简报' },
   { id: 'slides-outline', marker: '纲', name: '汇报大纲', description: '把研究内容转成汇报结构' },
-  { id: 'abstract-polish', marker: '摘', name: '摘要润色', description: '优化摘要表达和关键词' }
+  { id: 'tech-compare', marker: '比', name: '技术对比', description: '对比多个方案的适用场景与风险' }
 ];

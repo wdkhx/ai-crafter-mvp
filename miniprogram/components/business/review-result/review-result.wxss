@@ -1,26 +1,26 @@
-.paper-result__summary,
-.paper-result__content {
+﻿.review-result__summary,
+.review-result__content {
   background: #ffffff;
   border-radius: 8rpx;
   padding: 30rpx 28rpx;
   margin-bottom: 20rpx;
 }
 
-.paper-result__kicker {
+.review-result__kicker {
   color: #6b7280;
   font-size: 23rpx;
   font-weight: 700;
   margin-bottom: 10rpx;
 }
 
-.paper-result__title {
+.review-result__title {
   color: #111827;
   font-size: 36rpx;
   font-weight: 720;
   line-height: 1.36;
 }
 
-.paper-result__metrics {
+.review-result__metrics {
   display: flex;
   flex-wrap: wrap;
   gap: 14rpx 22rpx;
@@ -29,13 +29,13 @@
   margin: 18rpx 0 24rpx;
 }
 
-.paper-result__actions {
+.review-result__actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16rpx;
 }
 
-.paper-result__section-title {
+.review-result__section-title {
   color: #111827;
   font-size: 31rpx;
   font-weight: 700;
@@ -43,19 +43,27 @@
   margin: 32rpx 0 12rpx;
 }
 
-.paper-result__section-title:first-child {
+.review-result__section-title:first-child {
   margin-top: 0;
 }
 
-.paper-result__text,
-.paper-result__reference {
+.review-result__text,
+.review-result__bullet,
+.review-result__reference {
   color: #374151;
   font-size: 28rpx;
   line-height: 1.86;
   word-break: break-word;
 }
 
-.paper-result__reference {
+.review-result__reference {
   margin-bottom: 14rpx;
   font-size: 26rpx;
 }
+
+.review-result__bullet {
+  margin-top: 10rpx;
+  color: #4b5563;
+  font-size: 26rpx;
+}
+

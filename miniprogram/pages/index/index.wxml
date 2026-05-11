@@ -6,20 +6,19 @@
     bind:selecttool="handleSelectTool"
   />
 
-  <paper-form
+  <review-form
     wx:if="{{viewState === 'form'}}"
     form="{{form}}"
-    field-options="{{fieldOptions}}"
-    citation-options="{{citationOptions}}"
-    field-index="{{fieldIndex}}"
-    citation-index="{{citationIndex}}"
+    depth-options="{{depthOptions}}"
+    depth-display-options="{{depthDisplayOptions}}"
+    current-depth-label="{{currentDepthLabel}}"
+    depth-index="{{depthIndex}}"
     show-advanced="{{showAdvanced}}"
     submitting="{{submitting}}"
     bind:formchange="handleFormChange"
-    bind:fieldchange="handleFieldChange"
-    bind:citationchange="handleCitationChange"
+    bind:depthchange="handleDepthChange"
     bind:toggleadvanced="handleToggleAdvanced"
-    bind:submit="submitPaper"
+    bind:submit="submitReview"
     bind:back="backToToolbox"
   />
 
@@ -29,7 +28,7 @@
     bind:cancel="cancelTask"
   />
 
-  <paper-result
+  <review-result
     wx:if="{{viewState === 'result'}}"
     task="{{task}}"
     bind:copy="copyFullText"
@@ -37,3 +36,4 @@
     bind:regenerate="resetForm"
   />
 </view>
+

@@ -1,21 +1,19 @@
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
-import { PaperTask } from '../models/PaperTask.js';
-import { runPaperWorkflow } from '../workflows/paperWorkflow.js';
+import { ReviewTask } from '../models/ReviewTask.js';
+import { runFrontierReviewWorkflow } from '../workflows/frontierReviewWorkflow.js';
 
-export const paperInputSchema = z.object({
-  topic: z.string().min(4, '论文主题至少 4 个字符').max(120, '论文主题过长'),
-  word_count: z.coerce.number().min(1000).max(10000),
-  reference_count: z.coerce.number().min(5).max(30),
-  field: z.enum(['计算机科学', '电子工程', '机械工程', '其他']),
-  citation_style: z.enum(['APA', 'MLA', 'GB/T 7714-2015']),
-  special_requirements: z.string().max(500).optional().default('')
+export const frontierReviewInputSchema = z.object({
+  topic: z.string().min(2, '请至少输入 2 个字符').max(80, '技术点名称过长'),
+  depth: z.enum(['quick', 'standard', 'deep']).optional().default('standard'),
+  audience: z.string().max(80).optional().default('技术负责人 / 研发工程师'),
+  focus: z.string().max(240).optional().default('技术趋势、代表项目、落地路径')
 });
 
 const blockedWords = ['代写', '作弊', '抄袭', '买论文'];
 
-export async function createPaperTask(user, payload) {
-  const parsed = paperInputSchema.parse(payload);
+export async function createFrontierReviewTask(user, payload) {
+  const parsed = frontierReviewInputSchema.parse(payload);
   const joined = Object.values(parsed).join(' ');
   if (blockedWords.some((word) => joined.includes(word))) {
     const error = new Error('您输入的内容包含违规信息，请修改后重试');
@@ -24,29 +22,27 @@ export async function createPaperTask(user, payload) {
     throw error;
   }
 
-  const taskId = `paper_${nanoid(12)}`;
-  await PaperTask.create({
+  const taskId = `review_${nanoid(12)}`;
+  await ReviewTask.create({
     taskId,
     userId: user.id,
     input: {
       topic: parsed.topic,
-      wordCount: parsed.word_count,
-      referenceCount: parsed.reference_count,
-      field: parsed.field,
-      citationStyle: parsed.citation_style,
-      specialRequirements: parsed.special_requirements
+      depth: parsed.depth,
+      audience: parsed.audience,
+      focus: parsed.focus
     }
   });
 
   setTimeout(() => {
-    runPaperWorkflow(taskId).catch((error) => console.error(error));
+    runFrontierReviewWorkflow(taskId).catch((error) => console.error(error));
   }, 50);
 
   return getTaskForUser(user.id, taskId);
 }
 
 export async function getTaskForUser(userId, taskId) {
-  const task = await PaperTask.findOne({ userId, taskId }).lean();
+  const task = await ReviewTask.findOne({ userId, taskId }).lean();
   if (!task) {
     const error = new Error('任务不存在');
     error.status = 404;
@@ -57,7 +53,7 @@ export async function getTaskForUser(userId, taskId) {
 }
 
 export async function cancelTask(userId, taskId) {
-  const task = await PaperTask.findOne({ userId, taskId });
+  const task = await ReviewTask.findOne({ userId, taskId });
   if (!task) {
     const error = new Error('任务不存在');
     error.status = 404;
@@ -76,7 +72,7 @@ export async function cancelTask(userId, taskId) {
 }
 
 export async function listHistory(userId) {
-  const tasks = await PaperTask.find({ userId })
+  const tasks = await ReviewTask.find({ userId })
     .sort({ createdAt: -1 })
     .select('taskId status progress currentStep input result.metrics createdAt finishedAt')
     .lean();
@@ -84,11 +80,11 @@ export async function listHistory(userId) {
 }
 
 export async function deleteHistoryItem(userId, taskId) {
-  await PaperTask.deleteOne({ userId, taskId });
+  await ReviewTask.deleteOne({ userId, taskId });
 }
 
 export async function clearHistory(userId) {
-  await PaperTask.deleteMany({ userId });
+  await ReviewTask.deleteMany({ userId });
 }
 
 function toTaskDto(task) {
@@ -114,7 +110,9 @@ function toHistoryDto(task) {
     progress: task.progress,
     current_step: task.currentStep,
     topic: task.input?.topic,
-    word_count: task.result?.metrics?.wordCount || task.input?.wordCount,
+    word_count: task.result?.metrics?.wordCount || 0,
+    document_type: 'frontier_review',
+    signal_count: task.result?.metrics?.signalCount || 0,
     created_at: task.createdAt,
     finished_at: task.finishedAt
   };
@@ -123,10 +121,8 @@ function toHistoryDto(task) {
 function toInputDto(input = {}) {
   return {
     topic: input.topic,
-    word_count: input.wordCount,
-    reference_count: input.referenceCount,
-    field: input.field,
-    citation_style: input.citationStyle,
-    special_requirements: input.specialRequirements
+    depth: input.depth,
+    audience: input.audience,
+    focus: input.focus
   };
 }

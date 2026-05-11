@@ -45,7 +45,7 @@ export default function App() {
   const [workflows, setWorkflows] = useState([]);
   const [intelligence, setIntelligence] = useState([]);
 
-  const publishedWorkflow = useMemo(() => workflows.find((item) => item.workflowId === 'paper-writing-fixed-v1'), [workflows]);
+  const publishedWorkflow = useMemo(() => workflows.find((item) => item.workflowId === 'frontier-review-v1'), [workflows]);
 
   async function loadAll() {
     setLoading(true);
@@ -214,7 +214,7 @@ function Gateway() {
   return (
     <Card title="API 网关">
       <Paragraph>小程序端通过标准 REST API 调用后端，不感知 Agent 组件和工作流内部实现。</Paragraph>
-      <div className="endpoint">POST /api/v1/tools/paper-writing</div>
+      <div className="endpoint">POST /api/v1/tools/frontier-review</div>
       <div className="endpoint">GET /api/v1/tasks/:taskId</div>
       <div className="endpoint">GET /api/v1/history</div>
       <div className="endpoint">POST /api/v1/tasks/:taskId/cancel</div>

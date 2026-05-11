@@ -1,0 +1,28 @@
+﻿<view class="review-result">
+  <view class="review-result__summary">
+    <view class="review-result__kicker">已生成综述</view>
+    <view class="review-result__title">{{task.result.title}}</view>
+    <view class="review-result__metrics">
+      <text>{{task.result.metrics.wordCount}} 字</text>
+      <text>{{task.result.metrics.signalCount}} 条信号</text>
+    </view>
+    <view class="review-result__actions">
+      <action-button bind:tap="handleCopy">复制全文</action-button>
+      <action-button variant="secondary" bind:tap="handleDownload">导出 .docx</action-button>
+    </view>
+    <action-button variant="plain" bind:tap="handleRegenerate">重新生成</action-button>
+  </view>
+
+  <view class="review-result__content">
+    <view class="review-result__section-title">执行摘要</view>
+    <view class="review-result__text">{{task.result.executiveSummary}}</view>
+    <block wx:for="{{task.result.sections}}" wx:key="heading">
+      <view class="review-result__section-title">{{item.heading}}</view>
+      <view class="review-result__text">{{item.content}}</view>
+      <view wx:for="{{item.bullets}}" wx:key="*this" class="review-result__bullet">· {{item}}</view>
+    </block>
+    <view class="review-result__section-title">来源信号</view>
+    <view wx:for="{{task.result.signals}}" wx:key="url" class="review-result__reference">[{{index + 1}}] {{item.source}} · {{item.name}}</view>
+  </view>
+</view>
+

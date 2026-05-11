@@ -1,4 +1,4 @@
-Component({
+﻿Component({
   properties: {
     task: {
       type: Object,
@@ -20,3 +20,4 @@ Component({
     }
   }
 });
+

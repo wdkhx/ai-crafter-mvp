@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import { env } from './config/env.js';
 import { requireAuth } from './middleware/auth.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
-import { paperRouter } from './routes/paperRoutes.js';
+import { reviewRouter } from './routes/reviewRoutes.js';
 import { platformRouter } from './routes/platformRoutes.js';
 
 export function createApp() {
@@ -20,7 +20,7 @@ export function createApp() {
     res.json({ ok: true, name: 'AI CRAFTER Backend', time: new Date().toISOString() });
   });
 
-  app.use('/api/v1', requireAuth, paperRouter);
+  app.use('/api/v1', requireAuth, reviewRouter);
   app.use('/api/v1/platform', requireAuth, platformRouter);
 
   app.use(notFound);

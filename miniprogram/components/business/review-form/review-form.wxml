@@ -1,0 +1,61 @@
+﻿<view class="review-form">
+  <view class="review-form__back" bindtap="handleBack">返回工具箱</view>
+
+  <view class="review-form__intro">
+    <view class="review-form__marker">综</view>
+    <view>
+      <view class="review-form__title">技术点前沿综述</view>
+      <view class="review-form__desc">输入一个技术点，系统会抓取近期公开信号，整理成可下载的综述文档。</view>
+    </view>
+  </view>
+
+  <view class="review-form__panel">
+    <view class="form-field">
+      <text class="form-label">技术点</text>
+      <textarea
+        class="form-textarea form-textarea--main"
+        placeholder="例如：Agent"
+        value="{{form.topic}}"
+        data-key="topic"
+        bindinput="handleInput"
+      />
+    </view>
+
+    <view class="review-form__defaults">
+      <view>
+        <view class="review-form__defaults-title">默认方案</view>
+        <view class="review-form__defaults-desc">{{currentDepthLabel}} · {{form.audience}} · {{form.focus}}</view>
+      </view>
+      <button class="review-form__adjust" bindtap="handleToggleAdvanced">{{showAdvanced ? '收起' : '调整'}}</button>
+    </view>
+
+    <view wx:if="{{showAdvanced}}" class="review-form__advanced">
+      <view class="form-field">
+        <text class="form-label">综述深度</text>
+        <picker mode="selector" range="{{depthDisplayOptions}}" value="{{depthIndex}}" bindchange="handleDepthChange">
+          <view class="form-picker">{{currentDepthLabel}}</view>
+        </picker>
+      </view>
+
+      <view class="form-field">
+        <text class="form-label">目标读者</text>
+        <input class="form-input" value="{{form.audience}}" data-key="audience" bindinput="handleInput" />
+      </view>
+
+      <view class="form-field">
+        <text class="form-label">关注方向</text>
+        <textarea
+          class="form-textarea"
+          placeholder="例如：技术趋势、代表项目、工程落地"
+          value="{{form.focus}}"
+          data-key="focus"
+          bindinput="handleInput"
+        />
+      </view>
+    </view>
+
+    <action-button loading="{{submitting}}" bind:tap="handleSubmit">生成前沿综述</action-button>
+    <view class="review-form__notice">综述基于公开信号和模型分析生成，请结合原始来源复核。</view>
+  </view>
+</view>
+

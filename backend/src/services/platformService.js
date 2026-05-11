@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { AgentComponent } from '../models/AgentComponent.js';
 import { TechIntelligence } from '../models/TechIntelligence.js';
 import { Workflow } from '../models/Workflow.js';
-import { PaperTask } from '../models/PaperTask.js';
+import { ReviewTask } from '../models/ReviewTask.js';
 import { env } from '../config/env.js';
 
 export async function listComponents() {
@@ -72,9 +72,9 @@ export async function refreshIntelligence() {
 
 export async function getMetrics() {
   const [totalTasks, successTasks, runningTasks, components, workflows, intelligence] = await Promise.all([
-    PaperTask.countDocuments(),
-    PaperTask.countDocuments({ status: 'succeeded' }),
-    PaperTask.countDocuments({ status: { $in: ['queued', 'running'] } }),
+    ReviewTask.countDocuments(),
+    ReviewTask.countDocuments({ status: 'succeeded' }),
+    ReviewTask.countDocuments({ status: { $in: ['queued', 'running'] } }),
     AgentComponent.countDocuments(),
     Workflow.countDocuments(),
     TechIntelligence.countDocuments()
@@ -105,7 +105,7 @@ async function fetchGithubAgentRepos() {
     url: repo.html_url,
     publishedAt: repo.pushed_at,
     summary: repo.description || '最新 Agent 相关开源项目，建议技术团队进一步评估实现细节。',
-    applicationAdvice: '可评估其在论文写作工具的文献检索、工作流编排或结果验证环节中的复用价值。',
+    applicationAdvice: '可评估其在前沿综述工具的情报抓取、信号排序、趋势判断或文档生成环节中的复用价值。',
     tags: ['Agent', repo.language || 'Unknown'].filter(Boolean),
     heatScore: repo.stargazers_count,
     rating: Math.min(5, Number((3.8 + Math.log10(Math.max(repo.stargazers_count, 1)) / 3).toFixed(1)))
@@ -122,8 +122,8 @@ function buildFallbackIntelligence() {
       url: 'https://arxiv.org',
       publishedAt: now,
       summary: '通过检索、生成、反思和修正循环降低事实性错误。',
-      applicationAdvice: '适合用于论文写作工具的文献检索和内容生成环节，帮助降低幻觉率。',
-      tags: ['RAG', 'Self-Correction', 'Paper Writing'],
+      applicationAdvice: '适合用于前沿综述工具的来源核验、证据约束和结论修正环节，帮助降低幻觉率。',
+      tags: ['RAG', 'Self-Correction', 'Frontier Review'],
       heatScore: 92,
       rating: 4.8
     },

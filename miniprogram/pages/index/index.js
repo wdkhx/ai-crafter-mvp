@@ -1,9 +1,10 @@
 import { API_BASE_URL, API_TOKEN } from '../../config';
 import {
   AVAILABLE_TOOLS,
-  CITATION_OPTIONS,
-  DEFAULT_PAPER_FORM,
-  FIELD_OPTIONS,
+  DEFAULT_REVIEW_FORM,
+  DEPTH_DISPLAY_OPTIONS,
+  DEPTH_LABELS,
+  DEPTH_OPTIONS,
   UPCOMING_TOOLS
 } from '../../constants/tools';
 import { request } from '../../utils/request';
@@ -12,16 +13,16 @@ Page({
   data: {
     availableTools: AVAILABLE_TOOLS,
     upcomingTools: UPCOMING_TOOLS,
-    fieldOptions: FIELD_OPTIONS,
-    citationOptions: CITATION_OPTIONS,
-    fieldIndex: 0,
-    citationIndex: 0,
+    depthOptions: DEPTH_OPTIONS,
+    depthDisplayOptions: DEPTH_DISPLAY_OPTIONS,
+    depthIndex: 0,
+    currentDepthLabel: DEPTH_LABELS[DEFAULT_REVIEW_FORM.depth],
     viewState: 'toolbox',
     showAdvanced: false,
     submitting: false,
     pollTimer: null,
     task: null,
-    form: { ...DEFAULT_PAPER_FORM }
+    form: { ...DEFAULT_REVIEW_FORM }
   },
 
   onUnload() {
@@ -29,7 +30,7 @@ Page({
   },
 
   handleSelectTool(event) {
-    if (event.detail.id !== 'paper-writing') return;
+    if (event.detail.id !== 'frontier-review') return;
     this.setData({ viewState: 'form' });
   },
 
@@ -42,14 +43,14 @@ Page({
     this.setData({ showAdvanced: !this.data.showAdvanced });
   },
 
-  handleFieldChange(event) {
+  handleDepthChange(event) {
     const index = event.detail.index;
-    this.setData({ fieldIndex: index, 'form.field': FIELD_OPTIONS[index] });
-  },
-
-  handleCitationChange(event) {
-    const index = event.detail.index;
-    this.setData({ citationIndex: index, 'form.citation_style': CITATION_OPTIONS[index] });
+    const depth = DEPTH_OPTIONS[index];
+    this.setData({
+      depthIndex: index,
+      currentDepthLabel: DEPTH_LABELS[depth],
+      'form.depth': depth
+    });
   },
 
   backToToolbox() {
@@ -57,17 +58,17 @@ Page({
     this.setData({ viewState: 'toolbox', task: null });
   },
 
-  async submitPaper() {
+  async submitReview() {
     const topic = String(this.data.form.topic || '').trim();
     if (!topic) {
-      wx.showToast({ title: '请先填写论文主题', icon: 'none' });
+      wx.showToast({ title: '请先输入技术点', icon: 'none' });
       return;
     }
 
     this.setData({ submitting: true, 'form.topic': topic });
     try {
       const task = await request({
-        url: '/tools/paper-writing',
+        url: '/tools/frontier-review',
         method: 'POST',
         data: { ...this.data.form, topic }
       });

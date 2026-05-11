@@ -1,4 +1,4 @@
-.paper-form__back {
+﻿.review-form__back {
   display: inline-flex;
   color: #374151;
   font-size: 26rpx;
@@ -6,7 +6,7 @@
   padding: 12rpx 0 22rpx;
 }
 
-.paper-form__intro {
+.review-form__intro {
   display: flex;
   gap: 22rpx;
   align-items: center;
@@ -16,7 +16,7 @@
   margin-bottom: 20rpx;
 }
 
-.paper-form__marker {
+.review-form__marker {
   width: 72rpx;
   height: 72rpx;
   border-radius: 10rpx;
@@ -29,21 +29,21 @@
   flex: 0 0 72rpx;
 }
 
-.paper-form__title {
+.review-form__title {
   color: #111827;
   font-size: 34rpx;
   font-weight: 700;
   line-height: 1.35;
 }
 
-.paper-form__desc {
+.review-form__desc {
   margin-top: 6rpx;
   color: #6b7280;
   font-size: 26rpx;
   line-height: 1.5;
 }
 
-.paper-form__panel {
+.review-form__panel {
   background: #ffffff;
   border-radius: 8rpx;
   padding: 28rpx;
@@ -84,7 +84,7 @@
   line-height: 1.55;
 }
 
-.paper-form__defaults {
+.review-form__defaults {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -92,20 +92,20 @@
   margin-bottom: 26rpx;
 }
 
-.paper-form__defaults-title {
+.review-form__defaults-title {
   color: #374151;
   font-size: 25rpx;
   font-weight: 700;
 }
 
-.paper-form__defaults-desc {
+.review-form__defaults-desc {
   margin-top: 6rpx;
   color: #6b7280;
   font-size: 24rpx;
   line-height: 1.5;
 }
 
-.paper-form__adjust {
+.review-form__adjust {
   width: 108rpx;
   margin: 0;
   padding: 0;
@@ -116,26 +116,27 @@
   line-height: 58rpx;
 }
 
-.paper-form__adjust::after {
+.review-form__adjust::after {
   border: 0;
 }
 
-.paper-form__advanced {
+.review-form__advanced {
   border-top: 1rpx solid #eceff3;
   padding-top: 26rpx;
   margin-bottom: 4rpx;
 }
 
-.paper-form__grid {
+.review-form__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18rpx;
 }
 
-.paper-form__notice {
+.review-form__notice {
   margin-top: 18rpx;
   color: #9ca3af;
   font-size: 23rpx;
   line-height: 1.5;
   text-align: center;
 }
+

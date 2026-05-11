@@ -14,6 +14,7 @@
     <view class="meta">
       <text>{{item.status}}</text>
       <text>{{item.word_count}} 字</text>
+      <text wx:if="{{item.signal_count}}">{{item.signal_count}} 条信号</text>
     </view>
     <view class="muted">{{item.created_at}}</view>
   </view>

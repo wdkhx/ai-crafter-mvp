@@ -6,7 +6,7 @@
 
 ```text
 ai-crafter-mvp/
-  backend/              Node.js + Express + MongoDB + LangChain 最简论文工作流
+  backend/              Node.js + Express + MongoDB + LangChain 最简前沿综述工作流
   developer-platform/   React + Ant Design 独立开发者平台
   miniprogram/          原生微信小程序 demo
   docker-compose.yml    本地 MongoDB
@@ -25,7 +25,7 @@ ai-crafter-mvp/
 
 - `OPENAI_API_KEY`：启用真实 LangChain 大模型生成
 - `OPENAI_BASE_URL`：接入 OpenAI 兼容的第三方模型服务，例如本地 vLLM、LM Studio、DeepSeek、硅基流动等
-- 外部文献检索 API：当前 MVP 使用内置模拟文献检索，后续可替换为 Semantic Scholar、Crossref、arXiv、学校数据库网关等
+- 外部技术情报源：当前 MVP 已接入 GitHub 与 arXiv 的公开信号抓取，后续可扩展到 Hugging Face、Product Hunt、技术博客和企业内部知识库
 - 微信小程序 `appid`：当前 `miniprogram/project.config.json` 使用测试号占位
 
 ## 一键启动
@@ -55,7 +55,7 @@ npm run dev
 ## 主要接口
 
 ```http
-POST /api/v1/tools/paper-writing
+POST /api/v1/tools/frontier-review
 GET /api/v1/tasks/:taskId
 GET /api/v1/tasks/:taskId/export.docx
 POST /api/v1/tasks/:taskId/cancel
@@ -79,18 +79,18 @@ GET /api/v1/platform/metrics
 Authorization: Bearer dev-token
 ```
 
-## 论文写作工作流
+## 技术点前沿综述工作流
 
 后端固定执行以下阶段：
 
-1. 主题解析
-2. 文献检索
-3. 大纲生成
-4. 内容写作
-5. 引用格式化
-6. 最终输出
+1. 技术点定位
+2. 前沿情报抓取
+3. 信号筛选
+4. 综述结构规划
+5. 综述撰写
+6. 格式化输出
 
-如果 `USE_REAL_LLM=false`，系统会生成稳定的演示论文结果；如果 `USE_REAL_LLM=true` 且配置了 `OPENAI_API_KEY`，会通过 LangChain 调用大模型。
+如果 `USE_REAL_LLM=false`，系统会生成稳定的演示综述结果；如果 `USE_REAL_LLM=true` 且配置了 `OPENAI_API_KEY`，会通过 LangChain 调用大模型。
 
 接入第三方 OpenAI 兼容服务时，在 `backend/.env` 中配置：
 
@@ -128,4 +128,4 @@ npm run build
 
 ## 合规提示
 
-MVP 页面和接口均保留“仅用于辅助写作，禁止学术不端”的提示。生产环境还需要接入内容安全审核、用户协议、隐私政策、数据 7 天清理任务和真实登录态。
+MVP 页面和接口均保留“基于公开信号生成，请结合原始来源复核”的提示。生产环境还需要接入内容安全审核、用户协议、隐私政策、数据 7 天清理任务和真实登录态。

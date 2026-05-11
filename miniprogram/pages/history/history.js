@@ -28,7 +28,7 @@ Page({
       }
       wx.setClipboardData({
         data: task.result.fullText,
-        success: () => wx.showToast({ title: '论文已复制' })
+        success: () => wx.showToast({ title: '综述已复制' })
       });
     } catch (error) {
       wx.showToast({ title: error.message, icon: 'none' });

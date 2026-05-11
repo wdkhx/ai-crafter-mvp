@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const paperTaskSchema = new mongoose.Schema(
+const reviewTaskSchema = new mongoose.Schema(
   {
     taskId: { type: String, required: true, unique: true, index: true },
     userId: { type: String, required: true, index: true },
@@ -12,14 +12,12 @@ const paperTaskSchema = new mongoose.Schema(
     },
     progress: { type: Number, default: 0 },
     currentStep: { type: String, default: '排队中' },
-    estimatedRemainingSeconds: { type: Number, default: 600 },
+    estimatedRemainingSeconds: { type: Number, default: 420 },
     input: {
       topic: String,
-      wordCount: Number,
-      referenceCount: Number,
-      field: String,
-      citationStyle: String,
-      specialRequirements: String
+      depth: String,
+      audience: String,
+      focus: String
     },
     workflowTrace: [
       {
@@ -33,19 +31,31 @@ const paperTaskSchema = new mongoose.Schema(
     ],
     result: {
       title: String,
-      abstract: String,
+      subtitle: String,
+      executiveSummary: String,
       sections: [
         {
           heading: String,
-          content: String
+          content: String,
+          bullets: [String]
         }
       ],
-      references: [String],
+      signals: [
+        {
+          source: String,
+          name: String,
+          url: String,
+          publishedAt: Date,
+          summary: String,
+          heatScore: Number,
+          tags: [String]
+        }
+      ],
       fullText: String,
       metrics: {
         wordCount: Number,
-        referenceCount: Number,
-        estimatedDuplicationRate: Number
+        signalCount: Number,
+        generatedAt: Date
       }
     },
     errorMessage: String,
@@ -55,6 +65,6 @@ const paperTaskSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-paperTaskSchema.index({ userId: 1, createdAt: -1 });
+reviewTaskSchema.index({ userId: 1, createdAt: -1 });
 
-export const PaperTask = mongoose.model('PaperTask', paperTaskSchema);
+export const ReviewTask = mongoose.model('ReviewTask', reviewTaskSchema);

@@ -1,22 +1,22 @@
-Component({
+﻿Component({
   properties: {
     form: {
       type: Object,
       value: {}
     },
-    fieldOptions: {
+    depthOptions: {
       type: Array,
       value: []
     },
-    citationOptions: {
+    depthDisplayOptions: {
       type: Array,
       value: []
     },
-    fieldIndex: {
-      type: Number,
-      value: 0
+    currentDepthLabel: {
+      type: String,
+      value: ''
     },
-    citationIndex: {
+    depthIndex: {
       type: Number,
       value: 0
     },
@@ -38,12 +38,8 @@ Component({
       });
     },
 
-    handleFieldChange(event) {
-      this.triggerEvent('fieldchange', { index: Number(event.detail.value) });
-    },
-
-    handleCitationChange(event) {
-      this.triggerEvent('citationchange', { index: Number(event.detail.value) });
+    handleDepthChange(event) {
+      this.triggerEvent('depthchange', { index: Number(event.detail.value) });
     },
 
     handleToggleAdvanced() {
@@ -59,3 +55,4 @@ Component({
     }
   }
 });
+

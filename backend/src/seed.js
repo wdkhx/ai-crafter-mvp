@@ -5,29 +5,42 @@ import { TechIntelligence } from './models/TechIntelligence.js';
 import { refreshIntelligence } from './services/platformService.js';
 
 const components = [
-  ['literature-search', '文献检索 Agent', '检索类', '根据论文主题、学科领域和参考文献数量检索候选学术文献。'],
-  ['pdf-parser', 'PDF 解析 Agent', '阅读类', '解析 PDF 正文、摘要、作者、年份和核心图表说明。'],
-  ['literature-reader', '文献阅读 Agent', '阅读类', '提取文献核心观点、方法、实验结论和可引用证据。'],
-  ['outline-generator', '大纲生成 Agent', '写作类', '基于主题和文献证据生成论文详细大纲。'],
-  ['content-writer', '内容写作 Agent', '写作类', '按章节生成学术论文初稿，保持结构严谨和表达规范。'],
-  ['citation-formatter', '引用格式生成 Agent', '格式类', '按 APA、MLA 或 GB/T 7714-2015 输出参考文献。'],
-  ['duplication-checker', '查重 Agent', '验证类', '估算重复率并对高风险段落进行改写。'],
-  ['result-validator', '结果验证 Agent', '验证类', '检查论文逻辑一致性、引用覆盖度和输出完整性。']
+  ['topic-scope', '技术点定位 Agent', '解析类', '将用户输入的技术点扩展为可检索、可分析的前沿综述范围。'],
+  ['frontier-scan', '前沿情报抓取 Agent', '检索类', '抓取 GitHub、arXiv 等公开来源中的近期技术信号。'],
+  ['signal-ranker', '技术信号筛选 Agent', '分析类', '按相关性、时效性、工程价值和热度筛选高价值信号。'],
+  ['review-planner', '综述结构规划 Agent', '写作类', '生成适合技术负责人阅读的综述章节结构。'],
+  ['review-writer', '综述撰写 Agent', '写作类', '围绕趋势、代表项目、落地路径和风险建议生成正文。'],
+  ['source-formatter', '来源格式化 Agent', '格式类', '整理公开来源信号，形成可追溯来源列表。'],
+  ['review-validator', '结论校验 Agent', '验证类', '检查结论是否由公开信号支持，标记待复核内容。'],
+  ['docx-exporter', '文档排版 Agent', '输出类', '生成结构清晰的在线结果和格式化 Word 文档。']
+];
+
+const legacyComponentIds = [
+  'literature-search',
+  'pdf-parser',
+  'literature-reader',
+  'outline-generator',
+  'content-writer',
+  'duplication-checker',
+  'result-validator'
 ];
 
 const workflowNodes = [
   { id: 'start', label: '开始', type: 'event' },
-  { id: 'topic-analysis', label: '主题解析', type: 'agent' },
-  { id: 'literature-search', label: '文献检索', type: 'agent' },
-  { id: 'outline-generation', label: '大纲生成', type: 'agent' },
-  { id: 'content-writing', label: '内容写作', type: 'agent' },
-  { id: 'citation-formatting', label: '引用格式化', type: 'agent' },
-  { id: 'final-output', label: '最终输出', type: 'agent' },
+  { id: 'topic-scope', label: '技术点定位', type: 'agent' },
+  { id: 'frontier-scan', label: '前沿情报抓取', type: 'agent' },
+  { id: 'signal-ranking', label: '信号筛选', type: 'agent' },
+  { id: 'outline-planning', label: '综述结构规划', type: 'agent' },
+  { id: 'review-writing', label: '综述撰写', type: 'agent' },
+  { id: 'final-output', label: '格式化输出', type: 'agent' },
   { id: 'end', label: '结束', type: 'event' }
 ];
 
 async function seed() {
   await connectDb();
+
+  await AgentComponent.deleteMany({ componentId: { $in: legacyComponentIds } });
+  await Workflow.deleteOne({ workflowId: 'paper-writing-fixed-v1' });
 
   for (const [componentId, name, category, description] of components) {
     await AgentComponent.updateOne(
@@ -49,12 +62,12 @@ async function seed() {
   }
 
   await Workflow.updateOne(
-    { workflowId: 'paper-writing-fixed-v1' },
+    { workflowId: 'frontier-review-v1' },
     {
       $set: {
-        workflowId: 'paper-writing-fixed-v1',
-        name: '科研论文写作工作流',
-        description: '主题解析 → 文献检索 → 大纲生成 → 内容写作 → 引用格式化 → 最终输出',
+        workflowId: 'frontier-review-v1',
+        name: '技术点前沿综述工作流',
+        description: '技术点定位 → 前沿情报抓取 → 信号筛选 → 综述结构规划 → 综述撰写 → 格式化输出',
         version: '1.0.0',
         status: 'published',
         nodes: workflowNodes,
@@ -63,9 +76,9 @@ async function seed() {
           target: workflowNodes[index + 1].id
         })),
         config: {
-          maxDurationMinutes: 10,
+          maxDurationMinutes: 8,
           allowCancel: true,
-          complianceNotice: '仅用于辅助写作，禁止学术不端。'
+          complianceNotice: '综述基于公开技术信号和模型分析生成，请结合原始来源复核事实。'
         }
       }
     },

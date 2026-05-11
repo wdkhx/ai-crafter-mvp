@@ -2,25 +2,25 @@ import express from 'express';
 import {
   cancelTask,
   clearHistory,
-  createPaperTask,
+  createFrontierReviewTask,
   deleteHistoryItem,
   getTaskForUser,
   listHistory
 } from '../services/taskService.js';
-import { buildPaperDocx } from '../services/exportService.js';
+import { buildReviewDocx } from '../services/exportService.js';
 
-export const paperRouter = express.Router();
+export const reviewRouter = express.Router();
 
-paperRouter.post('/tools/paper-writing', async (req, res, next) => {
+reviewRouter.post('/tools/frontier-review', async (req, res, next) => {
   try {
-    const task = await createPaperTask(req.user, req.body);
+    const task = await createFrontierReviewTask(req.user, req.body);
     res.status(202).json({ data: task });
   } catch (error) {
     next(error);
   }
 });
 
-paperRouter.get('/tasks/:taskId', async (req, res, next) => {
+reviewRouter.get('/tasks/:taskId', async (req, res, next) => {
   try {
     const task = await getTaskForUser(req.user.id, req.params.taskId);
     res.json({ data: task });
@@ -29,9 +29,9 @@ paperRouter.get('/tasks/:taskId', async (req, res, next) => {
   }
 });
 
-paperRouter.get('/tasks/:taskId/export.docx', async (req, res, next) => {
+reviewRouter.get('/tasks/:taskId/export.docx', async (req, res, next) => {
   try {
-    const { buffer, filename } = await buildPaperDocx(req.user.id, req.params.taskId);
+    const { buffer, filename } = await buildReviewDocx(req.user.id, req.params.taskId);
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
     res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`);
     res.send(buffer);
@@ -40,7 +40,7 @@ paperRouter.get('/tasks/:taskId/export.docx', async (req, res, next) => {
   }
 });
 
-paperRouter.post('/tasks/:taskId/cancel', async (req, res, next) => {
+reviewRouter.post('/tasks/:taskId/cancel', async (req, res, next) => {
   try {
     const task = await cancelTask(req.user.id, req.params.taskId);
     res.json({ data: task });
@@ -49,7 +49,7 @@ paperRouter.post('/tasks/:taskId/cancel', async (req, res, next) => {
   }
 });
 
-paperRouter.get('/history', async (req, res, next) => {
+reviewRouter.get('/history', async (req, res, next) => {
   try {
     const history = await listHistory(req.user.id);
     res.json({ data: history });
@@ -58,7 +58,7 @@ paperRouter.get('/history', async (req, res, next) => {
   }
 });
 
-paperRouter.get('/history/:taskId', async (req, res, next) => {
+reviewRouter.get('/history/:taskId', async (req, res, next) => {
   try {
     const task = await getTaskForUser(req.user.id, req.params.taskId);
     res.json({ data: task });
@@ -67,7 +67,7 @@ paperRouter.get('/history/:taskId', async (req, res, next) => {
   }
 });
 
-paperRouter.delete('/history/:taskId', async (req, res, next) => {
+reviewRouter.delete('/history/:taskId', async (req, res, next) => {
   try {
     await deleteHistoryItem(req.user.id, req.params.taskId);
     res.json({ data: true });
@@ -76,7 +76,7 @@ paperRouter.delete('/history/:taskId', async (req, res, next) => {
   }
 });
 
-paperRouter.delete('/history', async (req, res, next) => {
+reviewRouter.delete('/history', async (req, res, next) => {
   try {
     await clearHistory(req.user.id);
     res.json({ data: true });
