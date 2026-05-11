@@ -1,0 +1,44 @@
+.toolbox__header {
+  padding: 38rpx 0 30rpx;
+}
+
+.toolbox__brand {
+  color: #6b7280;
+  font-size: 23rpx;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-bottom: 16rpx;
+}
+
+.toolbox__title {
+  color: #111827;
+  font-size: 42rpx;
+  font-weight: 720;
+  line-height: 1.24;
+}
+
+.toolbox__subtitle {
+  margin-top: 16rpx;
+  color: #6b7280;
+  font-size: 28rpx;
+  line-height: 1.58;
+}
+
+.toolbox__section {
+  background: #ffffff;
+  border-radius: 8rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+}
+
+.toolbox__section--muted {
+  background: transparent;
+  padding: 18rpx 0 0;
+}
+
+.section-heading {
+  color: #374151;
+  font-size: 25rpx;
+  font-weight: 700;
+  margin-bottom: 12rpx;
+}

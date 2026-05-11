@@ -1,0 +1,14 @@
+<view class="tool-card {{disabled ? 'tool-card--disabled' : ''}}" bindtap="handleTap">
+  <view class="tool-card__main">
+    <view class="tool-card__marker">{{tool.marker}}</view>
+    <view class="tool-card__content">
+      <view class="tool-card__row">
+        <view class="tool-card__name">{{tool.name}}</view>
+        <view wx:if="{{tool.status}}" class="tool-card__status">{{tool.status}}</view>
+      </view>
+      <view class="tool-card__desc">{{tool.description}}</view>
+      <view wx:if="{{tool.meta}}" class="tool-card__meta">{{tool.meta}}</view>
+    </view>
+  </view>
+  <view wx:if="{{tool.actionText}}" class="tool-card__action">{{tool.actionText}}</view>
+</view>

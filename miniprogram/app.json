@@ -6,9 +6,9 @@
   ],
   "window": {
     "navigationBarTitleText": "AI CRAFTER",
-    "navigationBarBackgroundColor": "#101828",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#f4f7fb"
+    "navigationBarBackgroundColor": "#f7f7f5",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f7f5"
   },
   "tabBar": {
     "color": "#6b7280",

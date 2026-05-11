@@ -1,0 +1,21 @@
+<view class="task-progress">
+  <view class="task-progress__title">{{task.current_step}}</view>
+  <progress percent="{{task.progress}}" stroke-width="6" activeColor="#111827" backgroundColor="#e5e7eb" />
+  <view class="task-progress__meta">
+    <text>{{task.progress}}%</text>
+    <text>预计剩余 {{task.estimated_remaining_seconds}} 秒</text>
+  </view>
+  <view class="task-progress__hint">Agent 正在按固定流程处理，稍后也可以从历史记录查看结果。</view>
+
+  <view class="task-progress__steps">
+    <view wx:for="{{task.workflow_trace}}" wx:key="key" class="task-progress__step">
+      <view class="task-progress__dot task-progress__dot--{{item.status}}"></view>
+      <view>
+        <view class="task-progress__step-name">{{item.name}}</view>
+        <view class="task-progress__step-desc">{{item.summary || '执行中'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <action-button variant="danger" bind:tap="handleCancel">取消生成</action-button>
+</view>

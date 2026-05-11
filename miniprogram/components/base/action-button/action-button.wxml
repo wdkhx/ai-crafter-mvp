@@ -1,0 +1,8 @@
+<button
+  class="action-button action-button--{{variant}} {{block ? 'action-button--block' : ''}}"
+  loading="{{loading}}"
+  disabled="{{disabled}}"
+  bindtap="handleTap"
+>
+  <slot></slot>
+</button>

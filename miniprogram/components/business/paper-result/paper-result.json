@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "action-button": "../../base/action-button/action-button"
+  },
+  "options": {
+    "styleIsolation": "shared"
+  }
+}

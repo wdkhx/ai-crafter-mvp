@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "tool-card": "../tool-card/tool-card"
+  },
+  "options": {
+    "styleIsolation": "shared"
+  }
+}

@@ -1,0 +1,141 @@
+.paper-form__back {
+  display: inline-flex;
+  color: #374151;
+  font-size: 26rpx;
+  font-weight: 600;
+  padding: 12rpx 0 22rpx;
+}
+
+.paper-form__intro {
+  display: flex;
+  gap: 22rpx;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 8rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+}
+
+.paper-form__marker {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 10rpx;
+  background: #111827;
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-size: 30rpx;
+  font-weight: 700;
+  flex: 0 0 72rpx;
+}
+
+.paper-form__title {
+  color: #111827;
+  font-size: 34rpx;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.paper-form__desc {
+  margin-top: 6rpx;
+  color: #6b7280;
+  font-size: 26rpx;
+  line-height: 1.5;
+}
+
+.paper-form__panel {
+  background: #ffffff;
+  border-radius: 8rpx;
+  padding: 28rpx;
+}
+
+.form-field {
+  margin-bottom: 26rpx;
+}
+
+.form-label {
+  display: block;
+  color: #374151;
+  font-size: 26rpx;
+  font-weight: 650;
+  margin-bottom: 12rpx;
+}
+
+.form-input,
+.form-picker,
+.form-textarea {
+  width: 100%;
+  min-height: 88rpx;
+  background: #f9fafb;
+  border: 1rpx solid #e5e7eb;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  box-sizing: border-box;
+  color: #111827;
+  font-size: 28rpx;
+}
+
+.form-textarea {
+  height: 128rpx;
+}
+
+.form-textarea--main {
+  height: 188rpx;
+  line-height: 1.55;
+}
+
+.paper-form__defaults {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-bottom: 26rpx;
+}
+
+.paper-form__defaults-title {
+  color: #374151;
+  font-size: 25rpx;
+  font-weight: 700;
+}
+
+.paper-form__defaults-desc {
+  margin-top: 6rpx;
+  color: #6b7280;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.paper-form__adjust {
+  width: 108rpx;
+  margin: 0;
+  padding: 0;
+  background: #f3f4f6;
+  color: #374151;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  line-height: 58rpx;
+}
+
+.paper-form__adjust::after {
+  border: 0;
+}
+
+.paper-form__advanced {
+  border-top: 1rpx solid #eceff3;
+  padding-top: 26rpx;
+  margin-bottom: 4rpx;
+}
+
+.paper-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18rpx;
+}
+
+.paper-form__notice {
+  margin-top: 18rpx;
+  color: #9ca3af;
+  font-size: 23rpx;
+  line-height: 1.5;
+  text-align: center;
+}

@@ -1,0 +1,40 @@
+.action-button {
+  min-height: 88rpx;
+  margin: 0;
+  border-radius: 10rpx;
+  font-size: 29rpx;
+  font-weight: 600;
+  line-height: 88rpx;
+}
+
+.action-button::after {
+  border: 0;
+}
+
+.action-button--block {
+  width: 100%;
+}
+
+.action-button--primary {
+  background: #111827;
+  color: #ffffff;
+}
+
+.action-button--secondary {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.action-button--plain {
+  background: transparent;
+  color: #6b7280;
+}
+
+.action-button--danger {
+  background: #fef2f2;
+  color: #b42318;
+}
+
+.action-button[disabled] {
+  opacity: 0.55;
+}

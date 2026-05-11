@@ -1,3 +1,9 @@
 {
-  "navigationBarTitleText": "AI CRAFTER 工具箱"
+  "navigationBarTitleText": "AI CRAFTER 工具箱",
+  "usingComponents": {
+    "toolbox-home": "../../components/business/toolbox-home/toolbox-home",
+    "paper-form": "../../components/business/paper-form/paper-form",
+    "task-progress": "../../components/business/task-progress/task-progress",
+    "paper-result": "../../components/business/paper-result/paper-result"
+  }
 }

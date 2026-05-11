@@ -1,13 +1,19 @@
 import { API_BASE_URL, API_TOKEN } from '../../config';
+import {
+  AVAILABLE_TOOLS,
+  CITATION_OPTIONS,
+  DEFAULT_PAPER_FORM,
+  FIELD_OPTIONS,
+  UPCOMING_TOOLS
+} from '../../constants/tools';
 import { request } from '../../utils/request';
-
-const fieldOptions = ['计算机科学', '电子工程', '机械工程', '其他'];
-const citationOptions = ['GB/T 7714-2015', 'APA', 'MLA'];
 
 Page({
   data: {
-    fieldOptions,
-    citationOptions,
+    availableTools: AVAILABLE_TOOLS,
+    upcomingTools: UPCOMING_TOOLS,
+    fieldOptions: FIELD_OPTIONS,
+    citationOptions: CITATION_OPTIONS,
     fieldIndex: 0,
     citationIndex: 0,
     viewState: 'toolbox',
@@ -15,32 +21,35 @@ Page({
     submitting: false,
     pollTimer: null,
     task: null,
-    comingTools: [
-      { icon: '综', name: '文献综述', desc: '按主题整理研究脉络与代表文献' },
-      { icon: 'P', name: 'PPT 大纲', desc: '把研究内容转成汇报结构' },
-      { icon: '摘', name: '论文摘要润色', desc: '优化摘要表达和关键词' }
-    ],
-    form: {
-      topic: '',
-      word_count: 3000,
-      reference_count: 8,
-      field: fieldOptions[0],
-      citation_style: citationOptions[0],
-      special_requirements: ''
-    }
+    form: { ...DEFAULT_PAPER_FORM }
   },
 
   onUnload() {
     this.clearPoll();
   },
 
-  onInput(event) {
-    const key = event.currentTarget.dataset.key;
-    this.setData({ [`form.${key}`]: event.detail.value });
+  handleSelectTool(event) {
+    if (event.detail.id !== 'paper-writing') return;
+    this.setData({ viewState: 'form' });
   },
 
-  openPaperTool() {
-    this.setData({ viewState: 'form' });
+  handleFormChange(event) {
+    const { key, value } = event.detail;
+    this.setData({ [`form.${key}`]: value });
+  },
+
+  handleToggleAdvanced() {
+    this.setData({ showAdvanced: !this.data.showAdvanced });
+  },
+
+  handleFieldChange(event) {
+    const index = event.detail.index;
+    this.setData({ fieldIndex: index, 'form.field': FIELD_OPTIONS[index] });
+  },
+
+  handleCitationChange(event) {
+    const index = event.detail.index;
+    this.setData({ citationIndex: index, 'form.citation_style': CITATION_OPTIONS[index] });
   },
 
   backToToolbox() {
@@ -48,32 +57,19 @@ Page({
     this.setData({ viewState: 'toolbox', task: null });
   },
 
-  toggleAdvanced() {
-    this.setData({ showAdvanced: !this.data.showAdvanced });
-  },
-
-  onFieldChange(event) {
-    const index = Number(event.detail.value);
-    this.setData({ fieldIndex: index, 'form.field': fieldOptions[index] });
-  },
-
-  onCitationChange(event) {
-    const index = Number(event.detail.value);
-    this.setData({ citationIndex: index, 'form.citation_style': citationOptions[index] });
-  },
-
   async submitPaper() {
-    if (!this.data.form.topic) {
-      wx.showToast({ title: '请填写论文主题', icon: 'none' });
+    const topic = String(this.data.form.topic || '').trim();
+    if (!topic) {
+      wx.showToast({ title: '请先填写论文主题', icon: 'none' });
       return;
     }
 
-    this.setData({ submitting: true });
+    this.setData({ submitting: true, 'form.topic': topic });
     try {
       const task = await request({
         url: '/tools/paper-writing',
         method: 'POST',
-        data: this.data.form
+        data: { ...this.data.form, topic }
       });
       this.setData({ task, viewState: 'running', submitting: false });
       this.startPoll(task.task_id);
@@ -100,15 +96,13 @@ Page({
       }
     };
     poll();
-    const pollTimer = setInterval(poll, 1500);
-    this.setData({ pollTimer });
+    this.setData({ pollTimer: setInterval(poll, 1500) });
   },
 
   clearPoll() {
-    if (this.data.pollTimer) {
-      clearInterval(this.data.pollTimer);
-      this.setData({ pollTimer: null });
-    }
+    if (!this.data.pollTimer) return;
+    clearInterval(this.data.pollTimer);
+    this.setData({ pollTimer: null });
   },
 
   async cancelTask() {
@@ -129,6 +123,7 @@ Page({
   downloadDocx() {
     const taskId = this.data.task?.task_id;
     if (!taskId) return;
+
     wx.downloadFile({
       url: `${API_BASE_URL}/tasks/${taskId}/export.docx`,
       header: {

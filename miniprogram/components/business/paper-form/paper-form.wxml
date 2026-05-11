@@ -1,0 +1,73 @@
+<view class="paper-form">
+  <view class="paper-form__back" bindtap="handleBack">返回工具箱</view>
+
+  <view class="paper-form__intro">
+    <view class="paper-form__marker">文</view>
+    <view>
+      <view class="paper-form__title">科研论文写作</view>
+      <view class="paper-form__desc">只填主题也可以开始。系统会使用默认参数生成一版可编辑初稿。</view>
+    </view>
+  </view>
+
+  <view class="paper-form__panel">
+    <view class="form-field">
+      <text class="form-label">论文主题</text>
+      <textarea
+        class="form-textarea form-textarea--main"
+        placeholder="例如：基于深度学习的图像分类方法研究"
+        value="{{form.topic}}"
+        data-key="topic"
+        bindinput="handleInput"
+      />
+    </view>
+
+    <view class="paper-form__defaults">
+      <view>
+        <view class="paper-form__defaults-title">默认方案</view>
+        <view class="paper-form__defaults-desc">{{form.word_count}} 字 · {{form.reference_count}} 篇文献 · {{form.field}} · {{form.citation_style}}</view>
+      </view>
+      <button class="paper-form__adjust" bindtap="handleToggleAdvanced">{{showAdvanced ? '收起' : '调整'}}</button>
+    </view>
+
+    <view wx:if="{{showAdvanced}}" class="paper-form__advanced">
+      <view class="paper-form__grid">
+        <view class="form-field">
+          <text class="form-label">字数</text>
+          <input class="form-input" type="number" value="{{form.word_count}}" data-key="word_count" bindinput="handleInput" />
+        </view>
+        <view class="form-field">
+          <text class="form-label">文献数</text>
+          <input class="form-input" type="number" value="{{form.reference_count}}" data-key="reference_count" bindinput="handleInput" />
+        </view>
+      </view>
+
+      <view class="form-field">
+        <text class="form-label">学科领域</text>
+        <picker mode="selector" range="{{fieldOptions}}" value="{{fieldIndex}}" bindchange="handleFieldChange">
+          <view class="form-picker">{{form.field}}</view>
+        </picker>
+      </view>
+
+      <view class="form-field">
+        <text class="form-label">引用格式</text>
+        <picker mode="selector" range="{{citationOptions}}" value="{{citationIndex}}" bindchange="handleCitationChange">
+          <view class="form-picker">{{form.citation_style}}</view>
+        </picker>
+      </view>
+
+      <view class="form-field">
+        <text class="form-label">特殊要求</text>
+        <textarea
+          class="form-textarea"
+          placeholder="例如：包含实验部分，重点介绍 Transformer 模型"
+          value="{{form.special_requirements}}"
+          data-key="special_requirements"
+          bindinput="handleInput"
+        />
+      </view>
+    </view>
+
+    <action-button loading="{{submitting}}" bind:tap="handleSubmit">生成论文初稿</action-button>
+    <view class="paper-form__notice">生成内容仅作写作辅助，请自行核验事实与引用。</view>
+  </view>
+</view>

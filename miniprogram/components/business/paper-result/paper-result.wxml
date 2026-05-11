@@ -1,0 +1,27 @@
+<view class="paper-result">
+  <view class="paper-result__summary">
+    <view class="paper-result__kicker">已生成初稿</view>
+    <view class="paper-result__title">{{task.result.title}}</view>
+    <view class="paper-result__metrics">
+      <text>{{task.result.metrics.wordCount}} 字</text>
+      <text>{{task.result.metrics.referenceCount}} 篇文献</text>
+      <text>重复率约 {{task.result.metrics.estimatedDuplicationRate}}%</text>
+    </view>
+    <view class="paper-result__actions">
+      <action-button bind:tap="handleCopy">复制全文</action-button>
+      <action-button variant="secondary" bind:tap="handleDownload">导出 .docx</action-button>
+    </view>
+    <action-button variant="plain" bind:tap="handleRegenerate">重新生成</action-button>
+  </view>
+
+  <view class="paper-result__content">
+    <view class="paper-result__section-title">摘要</view>
+    <view class="paper-result__text">{{task.result.abstract}}</view>
+    <block wx:for="{{task.result.sections}}" wx:key="heading">
+      <view class="paper-result__section-title">{{item.heading}}</view>
+      <view class="paper-result__text">{{item.content}}</view>
+    </block>
+    <view class="paper-result__section-title">参考文献</view>
+    <view wx:for="{{task.result.references}}" wx:key="*this" class="paper-result__reference">{{item}}</view>
+  </view>
+</view>

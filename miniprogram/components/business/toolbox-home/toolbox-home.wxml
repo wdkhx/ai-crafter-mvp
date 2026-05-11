@@ -1,0 +1,17 @@
+<view class="toolbox">
+  <view class="toolbox__header">
+    <view class="toolbox__brand">AI CRAFTER</view>
+    <view class="toolbox__title">把常用科研任务做成工具</view>
+    <view class="toolbox__subtitle">从一个明确任务开始，系统会按步骤完成后续处理。</view>
+  </view>
+
+  <view class="toolbox__section">
+    <view class="section-heading">可用工具</view>
+    <tool-card wx:for="{{availableTools}}" wx:key="id" tool="{{item}}" bind:select="handleSelectTool" />
+  </view>
+
+  <view class="toolbox__section toolbox__section--muted">
+    <view class="section-heading">正在准备</view>
+    <tool-card wx:for="{{upcomingTools}}" wx:key="id" tool="{{item}}" disabled="{{true}}" />
+  </view>
+</view>
