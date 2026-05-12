@@ -1,4 +1,4 @@
-﻿<view class="review-result">
+<view class="review-result">
   <view class="review-result__summary">
     <view class="review-result__kicker">已生成综述</view>
     <view class="review-result__title">{{task.result.title}}</view>

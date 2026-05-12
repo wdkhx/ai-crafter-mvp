@@ -1,4 +1,4 @@
-﻿.review-result__summary,
+.review-result__summary,
 .review-result__content {
   background: #ffffff;
   border-radius: 8rpx;

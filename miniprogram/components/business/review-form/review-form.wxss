@@ -1,4 +1,4 @@
-﻿.review-form__back {
+.review-form__back {
   display: inline-flex;
   color: #374151;
   font-size: 26rpx;
