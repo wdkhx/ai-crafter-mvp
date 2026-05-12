@@ -7,10 +7,10 @@
       <text>{{task.result.metrics.signalCount}} 条信号</text>
     </view>
     <view class="review-result__actions">
-      <action-button bind:tap="handleCopy">复制全文</action-button>
-      <action-button variant="secondary" bind:tap="handleDownload">导出 .docx</action-button>
+      <action-button bindtap="handleCopy">复制全文</action-button>
+      <action-button variant="secondary" bindtap="handleDownload">导出 .docx</action-button>
     </view>
-    <action-button variant="plain" bind:tap="handleRegenerate">重新生成</action-button>
+    <action-button variant="plain" bindtap="handleRegenerate">重新生成</action-button>
   </view>
 
   <view class="review-result__content">

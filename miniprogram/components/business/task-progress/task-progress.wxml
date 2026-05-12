@@ -17,5 +17,5 @@
     </view>
   </view>
 
-  <action-button variant="danger" bind:tap="handleCancel">取消生成</action-button>
+  <action-button variant="danger" bindtap="handleCancel">取消生成</action-button>
 </view>

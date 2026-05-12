@@ -54,7 +54,7 @@
       </view>
     </view>
 
-    <action-button loading="{{submitting}}" bind:tap="handleSubmit">生成前沿综述</action-button>
+    <action-button loading="{{submitting}}" bindtap="handleSubmit">生成前沿综述</action-button>
     <view class="review-form__notice">综述基于公开信号和模型分析生成，请结合原始来源复核。</view>
   </view>
 </view>

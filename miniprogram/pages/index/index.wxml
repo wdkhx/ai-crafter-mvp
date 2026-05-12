@@ -3,8 +3,8 @@
     wx:if="{{viewState === 'toolbox'}}"
     available-tools="{{availableTools}}"
     upcoming-tools="{{upcomingTools}}"
-    bind:selecttool="handleSelectTool"
-  />
+    bindselecttool="handleSelectTool"
+  ></toolbox-home>
 
   <review-form
     wx:if="{{viewState === 'form'}}"
@@ -15,25 +15,25 @@
     depth-index="{{depthIndex}}"
     show-advanced="{{showAdvanced}}"
     submitting="{{submitting}}"
-    bind:formchange="handleFormChange"
-    bind:depthchange="handleDepthChange"
-    bind:toggleadvanced="handleToggleAdvanced"
-    bind:submit="submitReview"
-    bind:back="backToToolbox"
-  />
+    bindformchange="handleFormChange"
+    binddepthchange="handleDepthChange"
+    bindtoggleadvanced="handleToggleAdvanced"
+    bindsubmit="submitReview"
+    bindback="backToToolbox"
+  ></review-form>
 
   <task-progress
     wx:if="{{viewState === 'running'}}"
     task="{{task}}"
-    bind:cancel="cancelTask"
-  />
+    bindcancel="cancelTask"
+  ></task-progress>
 
   <review-result
     wx:if="{{viewState === 'result'}}"
     task="{{task}}"
-    bind:copy="copyFullText"
-    bind:download="downloadDocx"
-    bind:regenerate="resetForm"
-  />
+    bindcopy="copyFullText"
+    binddownload="downloadDocx"
+    bindregenerate="resetForm"
+  ></review-result>
 </view>
 
